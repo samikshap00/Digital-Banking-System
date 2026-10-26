@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Digital Banking System</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div><span class="brand-mark">DB</span><span class="brand-name">Digital Banking</span></div>
+      <div id="userBadge" class="user-badge">Demo mode</div>
+    </header>
+    <main class="shell">
+      <section class="hero"><p class="eyebrow">SUPABASE DBMS MICRO-PROJECT</p><h1>Banking made simple and secure.</h1><p>View balances, manage beneficiaries, and transfer money through a role-aware banking database.</p></section>
+      <section id="authPanel" class="card auth-card">
+        <h2>Sign in to continue</h2><p class="muted">Use your Supabase Auth account. The demo preview loads without credentials.</p>
+        <div class="form-row"><input id="email" type="email" placeholder="Email address" /><input id="password" type="password" placeholder="Password" /></div>
+        <button id="signInBtn" class="primary">Sign in</button><button id="demoBtn" class="secondary">Open demo preview</button><p id="authMessage" class="message"></p>
+      </section>
+      <section id="appPanel" class="hidden">
+        <div class="toolbar"><div><p class="eyebrow">ACCOUNT OVERVIEW</p><h2 id="welcome">Welcome back</h2></div><button id="signOutBtn" class="secondary">Sign out</button></div>
+        <div id="summaryCards" class="stats"></div>
+        <div class="grid-two"><section class="card"><div class="section-heading"><h3>My accounts</h3><button id="refreshBtn" class="text-button">Refresh</button></div><div id="accountsList"></div></section><section class="card"><div class="section-heading"><h3>Recent activity</h3></div><div id="transactionsList"></div></section></div>
+        <section class="card transfer-card"><div><p class="eyebrow">QUICK ACTION</p><h3>Transfer money</h3></div><div class="form-row"><select id="fromAccount"></select><input id="toAccount" placeholder="Destination account number" /><input id="amount" type="number" min="1" step="0.01" placeholder="Amount" /></div><input id="description" placeholder="Description (optional)" /><button id="transferBtn" class="primary">Make transfer</button><p id="transferMessage" class="message"></p></section>
+        <section id="staffPanel" class="card hidden"><div class="section-heading"><h3>Staff review</h3><span class="role-pill">STAFF ACCESS</span></div><div id="staffAccounts"></div></section>
+      </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="app.js"></script>
+  </body>
+</html>
