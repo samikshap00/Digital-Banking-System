@@ -5,25 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Digital Banking System</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="role-details.css" />
   </head>
   <body>
     <header class="topbar">
       <div><span class="brand-mark">DB</span><span class="brand-name">Digital Banking</span></div>
-      <div id="userBadge" class="user-badge">Demo mode</div>
+      <div id="userBadge" class="user-badge">SUPABASE</div>
     </header>
     <main class="shell">
-      <section class="hero"><p class="eyebrow">SUPABASE DBMS MICRO-PROJECT</p><h1>Banking made simple and secure.</h1><p>View balances, manage beneficiaries, and transfer money through a role-aware banking database.</p></section>
+      <section class="hero"><p class="eyebrow">SUPABASE DBMS MICRO-PROJECT</p><h1>Banking made simple and secure.</h1><p>One banking database with separate customer services, staff duties, and administrator controls.</p></section>
       <section id="authPanel" class="card auth-card">
-        <h2>Sign in to continue</h2><p class="muted">Use your Supabase Auth account. The demo preview loads without credentials.</p>
+        <h2>Sign in to continue</h2><p class="muted">Sign in with your Supabase Auth account to access your role-based banking workspace.</p>
         <div class="form-row"><input id="email" type="email" placeholder="Email address" /><input id="password" type="password" placeholder="Password" /></div>
-        <button id="signInBtn" class="primary">Sign in</button><button id="demoBtn" class="secondary">Open demo preview</button><p id="authMessage" class="message"></p>
+        <button id="signInBtn" class="primary">Sign in</button><p id="authMessage" class="message"></p>
       </section>
       <section id="appPanel" class="hidden">
         <div class="toolbar"><div><p class="eyebrow">ACCOUNT OVERVIEW</p><h2 id="welcome">Welcome back</h2></div><button id="signOutBtn" class="secondary">Sign out</button></div>
+        <div id="roleSummary" class="role-summary"></div>
+        <div id="customerPanel">
         <div id="summaryCards" class="stats"></div>
-        <div class="grid-two"><section class="card"><div class="section-heading"><h3>My accounts</h3><button id="refreshBtn" class="text-button">Refresh</button></div><div id="accountsList"></div></section><section class="card"><div class="section-heading"><h3>Recent activity</h3></div><div id="transactionsList"></div></section></div>
-        <section class="card transfer-card"><div><p class="eyebrow">QUICK ACTION</p><h3>Transfer money</h3></div><div class="form-row"><select id="fromAccount"></select><input id="toAccount" placeholder="Destination account number" /><input id="amount" type="number" min="1" step="0.01" placeholder="Amount" /></div><input id="description" placeholder="Description (optional)" /><button id="transferBtn" class="primary">Make transfer</button><p id="transferMessage" class="message"></p></section>
-        <section id="staffPanel" class="card hidden"><div class="section-heading"><h3>Staff review</h3><span class="role-pill">STAFF ACCESS</span></div><div id="staffAccounts"></div></section>
+        <div class="grid-two"><section class="card"><div class="section-heading"><h3>My accounts</h3><button id="refreshBtn" class="text-button">Refresh</button></div><div id="accountsList"></div></section><section class="card"><div class="section-heading"><h3>Recent activity and transaction history</h3></div><div id="transactionsList"></div></section></div>
+        <section class="card transfer-card"><div><p class="eyebrow">CUSTOMER SERVICE</p><h3>Transfer money</h3><p class="muted">Transfers are processed atomically. Failed requests leave both balances unchanged.</p></div><div class="form-row"><select id="fromAccount"></select><input id="toAccount" placeholder="Destination account number" /><input id="amount" type="number" min="1" step="0.01" placeholder="Amount" /></div><input id="description" placeholder="Description (optional)" /><div class="action-row"><button id="transferBtn" class="primary">Send transfer</button><button id="recoveryDemoBtn" class="danger-soft">Run interrupted-transfer demo</button></div><p id="transferMessage" class="message"></p></section>
+        <section class="card"><div class="section-heading"><div><p class="eyebrow">SAVED DESTINATIONS</p><h3>Beneficiaries</h3></div></div><div id="beneficiariesList"></div></section>
+        </div>
+        <section id="staffPanel" class="card role-panel hidden"><div class="role-heading"><div><p class="eyebrow">OPERATIONS WORKSPACE</p><h2>Staff account review</h2><p class="muted">Duty: review account status and apply temporary freezes when an account needs attention. Staff cannot change balances, customer roles, or close accounts.</p></div><span class="role-pill staff-pill">STAFF</span></div><div class="staff-summary" id="staffSummary"></div><div class="section-heading"><h3>Accounts under review</h3><span class="muted">Account numbers are masked</span></div><p id="staffMessage" class="message"></p><div id="staffAccounts"></div></section>
+        <section id="adminPanel" class="card role-panel admin-panel hidden"><div class="role-heading"><div><p class="eyebrow">SYSTEM CONTROL CENTER</p><h2>Administrator console</h2><p class="muted">Oversee system activity, control account states, provision accounts, and review or remove beneficiary records.</p></div><span class="role-pill admin-pill">ADMIN</span></div><div id="adminMetrics" class="admin-metrics"></div><div class="admin-grid"><section class="subpanel"><div class="section-heading"><h3>Account controls</h3><span class="muted">Masked account numbers</span></div><div id="adminAccounts"></div></section><section class="subpanel"><div class="section-heading"><h3>Beneficiary management</h3><span class="muted">Customer account numbers are masked</span></div><p id="beneficiaryMessage" class="message"></p><div id="adminBeneficiaries"></div></section></div><section class="subpanel provision-panel"><div><p class="eyebrow">ACCOUNT PROVISIONING</p><h3>Open an account</h3><p class="muted">Create an account for an existing customer profile.</p></div><div class="form-row"><select id="newAccountOwner"></select><select id="newAccountType"><option value="savings">Savings</option><option value="current">Current</option></select><select id="newAccountBranch"></select></div><div class="form-row"><input id="newAccountNumber" placeholder="Unique account number" /><input id="newAccountBalance" type="number" min="0" step="0.01" placeholder="Opening balance" /><button id="createAccountBtn" class="primary">Open account</button></div><p id="adminMessage" class="message"></p></section></section>
       </section>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="app.js"></script>

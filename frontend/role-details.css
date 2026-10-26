@@ -1,0 +1,7 @@
+.recovery-transaction{background:#fff8ee;border:1px solid #f3d6a8;border-radius:12px;padding:13px;margin:10px 0}
+.status-rolled_back{color:#a4510a;font-weight:800}
+.beneficiary-admin-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.beneficiary-admin-row:last-child{border-bottom:0}
+.beneficiary-admin-row .account-number{overflow-wrap:anywhere}
+.danger-action{background:#fff0ef;color:#a5322b;white-space:nowrap}
+@media(max-width:520px){.beneficiary-admin-row{align-items:flex-start;flex-direction:column}}

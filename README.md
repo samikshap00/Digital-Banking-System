@@ -1,31 +1,41 @@
 # Digital Banking System Database
 
-DBMS micro-project for a Digital Banking System built on Supabase (PostgreSQL), with a lightweight browser frontend.
+A DBMS micro-project that demonstrates a role-aware digital banking workflow using Supabase Auth, PostgreSQL, Row Level Security (RLS), and a browser frontend.
 
-## Project structure
+## Project contents
 
-- `supabase/schema.sql` - relational schema, constraints, indexes, views, and helper functions
-- `supabase/seed.sql` - safe demonstration data for branches, customers, accounts, beneficiaries, and transactions
-- `supabase/policies.sql` - Supabase Auth and Row Level Security policies for customer, staff, and admin access
-- `supabase/demo_queries.sql` - SQL commands for the report and live demonstration
-- `frontend/` - static frontend using the Supabase JavaScript client from a CDN
-- `report/` - report source and generated report deliverables
+- `supabase/schema.sql` — tables, constraints, indexes, views, and database functions.
+- `supabase/seed.sql` — sample branch data.
+- `supabase/demo_customers.sql` — additional customer, account, beneficiary, and transaction data. Replace the Auth UUID placeholders before running it.
+- `supabase/policies.sql` — RLS policies and role-aware database permissions.
+- `supabase/demo_queries.sql` — SQL examples for exploring the schema and demonstrating DBMS operations.
+- `frontend/` — the Supabase-connected browser application.
+- `report/build_report.py` — builds the project report and regenerates the ER and relational schema diagrams.
+- `report/schema_diagrams.py` — source for the diagrams.
 
-## Quick start
+## Setup and run
 
-1. Follow `SUPABASE_SETUP.md` to create the project and test users.
-2. Run `schema.sql`, `policies.sql`, and `seed.sql` in the Supabase SQL Editor.
-3. Replace the two placeholders at the top of `frontend/app.js` with the project URL and publishable/anon key.
-4. Open `frontend/index.html` through a local static server.
+1. In Supabase, create or select the project and apply the SQL files in this order: `schema.sql`, `seed.sql`, then `policies.sql`.
+2. Create the required users in Supabase Auth and link their UUIDs to the matching profiles. For the extra demo customers, replace the placeholders in `demo_customers.sql` with real Auth UUIDs before running it.
+3. Set the Supabase project URL and publishable key in the frontend configuration if they are not already set for your project. Never put a service-role key in browser code.
+4. Start a local static server from the project directory and open `frontend/index.html` through that server.
+5. Sign in with a user created in Supabase Auth to see the workspace for that profile’s role.
 
-The browser UI supports dashboard viewing, balance lookup, money transfer, beneficiary creation, transaction history, and staff account review. For a production system, never expose the service-role key in the browser; use only the publishable/anon key with RLS enabled.
+## Role boundaries
 
-## Demo roles
+- **Customer:** views their own accounts, beneficiaries, and activity; transfers funds from eligible accounts.
+- **Staff:** reviews masked account records and can freeze an active account or reactivate a frozen account. Staff cannot change balances, close accounts, or change roles.
+- **Admin:** views system-wide metrics, manages account states, provisions accounts for existing customers, and reviews or removes beneficiary records.
 
-- Customer: sees only their own profile, accounts, beneficiaries, and transactions.
-- Staff: can review customer and account information, and update account status through controlled policies.
-- Admin: can manage operational records and access all project tables.
+RLS remains the database-level access control. The frontend uses the publishable key and cannot grant itself permissions that the database policies do not allow.
 
-## Report status
+## Demonstrations
 
-The report follows the supplied college format: 15-20 pages, Times New Roman, justified body text, 1.5 spacing, diagrams, database operations, screenshots, conclusion, and future scope.
+- Run a valid transfer and inspect the resulting balances and transaction row.
+- Run the interrupted-transfer demo and confirm that the financial changes roll back while a separate recovery event appears in activity history.
+- Sign in as customer, staff, and admin to compare each role’s permitted views and actions.
+- Use `demo_queries.sql` to inspect tables, joins, aggregates, and access behavior.
+
+## Report and diagrams
+
+Run `report/build_report.py` with Python and the `python-docx` and Pillow packages installed. The report build creates the diagrams under `report/assets/` and places them on separate landscape pages so their labels remain readable. Primary keys are underlined in both diagrams. In the relational schema, each foreign-key field uses `→` followed by the referenced table and key.
